@@ -12,7 +12,7 @@ out_tweets = 'out_tweets.csv'
 out_users = 'out_users.csv'
 
 header_tweets = ['id', 'created_at', 'full_text', 'user_id', 'user_screen_name',
-                 'lang', 'is_retweeted', 'retweeted_user_id']
+                 'lang', 'is_retweeted', 'rt_id']
 # Otras cosasque se pueden sacar: 'in_reply_to_status_id', 'in_reply_to_user_id',
 # 'in_reply_to_screen_name', 'source', 'is_quote_status', 'retweet_count',
 # 'favorite_count'
@@ -30,11 +30,11 @@ def extract_tweet_info(status):
     # Ya que el RT tiene el mismo texto (pero me lo da truncado)
     if 'retweeted_status' in status:
         is_retweeted = True
-        retweeted_user_id = status['retweeted_status']['id']
+        rt_id = status['retweeted_status']['id']
         full_text = ''
     else:
         is_retweeted = False
-        retweeted_user_id = ''
+        rt_id = ''
         # Miro que key tiene ('full_text' o 'text')
         if not 'extended_tweet' in status:
             if 'full_text' in status:
@@ -46,7 +46,7 @@ def extract_tweet_info(status):
             full_text = status['extended_tweet']['full_text']
 
     out = [status['id'], status['created_at'], full_text, status['user']['id'],
-           status['user']['screen_name'], status['lang'], is_retweeted, retweeted_user_id ]
+           status['user']['screen_name'], status['lang'], is_retweeted, rt_id ]
 
     return out
 

@@ -75,8 +75,10 @@ if __name__ == '__main__':
             if i % 10000 == 0:
                 print('\rProcesando la linea: {}'.format(i), end='')
 
-            status = json.loads(line)
-
+            try:
+                status = json.loads(line)
+            except:
+                pass
             if status['id'] not in uniques_tweet_id:
                 tweets_writer.writerow(extract_tweet_info(status))
                 uniques_tweet_id.add(status['id'])
